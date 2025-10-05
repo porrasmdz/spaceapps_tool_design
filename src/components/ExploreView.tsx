@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
+import greenhouseImg from "../assets/greenhouse.jpg";
+import researchImg from "../assets/research.jpg";
 import { Badge } from "./ui/badge";
 import { 
   ArrowLeft, 
@@ -33,14 +35,14 @@ export function ExploreView({ placedModules }: ExploreViewProps) {
       id: "laboratory",
       name: "Laboratorio de Investigación",
       description: "Área de trabajo científico y análisis de muestras marcianas",
-      image: "../assets/greenhouse.jpg",
+      image: researchImg,
       connections: ["main-hub", "greenhouse"]
     },
     {
       id: "greenhouse",
       name: "Invernadero Hidropónico",
       description: "Sistema de cultivo de plantas para producción de alimentos y oxígeno",
-      image: "../assets/greenhouse.jpg",
+      image: greenhouseImg,
       connections: ["main-hub", "laboratory"]
     }
   ];
