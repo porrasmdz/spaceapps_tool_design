@@ -186,7 +186,7 @@ const availableModules = [
   },
   {
     id: 'rover',
-    name: 'Vehículo Rover',
+    name: 'Vehículo',
     subtitle: 'Exploración terrestre y transporte local',
     description:
       'Vehículo presurizado de 3x5 m para dos tripulantes. Autonomía de 50 km con baterías solares y soporte vital de 24 horas.',

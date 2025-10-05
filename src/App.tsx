@@ -5,13 +5,25 @@ import { PhysicalLayout } from "./components/PhysicalLayout";
 import { InteriorDesigner } from "./components/InteriorDesigner";
 import { ExploreView } from "./components/ExploreView";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
-import { Rocket, Home, Map, LayoutGrid, Compass } from "lucide-react";
+import { Rocket, Home, Map, LayoutGrid, Compass, Send } from "lucide-react";
 
 export default function App() {
   const [selectedPlanet, setSelectedPlanet] = useState(planets[0]);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const [placedModules, setPlacedModules] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState("home");
+  const [chatInput, setChatInput] = useState("");
+  const [chatMessages, setChatMessages] = useState<string[]>([]);
 
+  const handleSendMessage = () => {
+    if (chatInput.trim() === "") return;
+    setChatMessages([...chatMessages, `Tú: ${chatInput}`]);
+    setChatInput("");
+    // Simulación de respuesta
+    setTimeout(() => {
+      setChatMessages((msgs) => [...msgs, "🤖 HabifastBot: ¡Hola! ¿En qué puedo ayudarte?"]);
+    }, 500);
+  };
   const handleAddModule = (moduleType: any) => {
     // Position modules in center for physical layout
     const centerX = 450;
@@ -133,7 +145,7 @@ export default function App() {
         }}
       >
         {/* Mensajito emergente */}
-        <div
+        {!isChatOpen && <div
           style={{
             backgroundColor: "#fff",
             color: "#000",
@@ -145,7 +157,7 @@ export default function App() {
           }}
         >
           ¿Necesitas ayuda?
-        </div>
+        </div>}
 
         {/* Botón del chatbot */}
         <div
@@ -163,25 +175,108 @@ export default function App() {
             cursor: "pointer",
             transition: "transform 0.2s ease",
           }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.transform = "scale(1.1)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.transform = "scale(1)")
-          }
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
         >
           🤖
         </div>
       </div>
 
-      {/* Animación para el mensaje */}
+      {/* Ventana de chat */}
+      {isChatOpen && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "90px",
+            right: "24px",
+
+            zIndex: 999,
+            width: "320px",
+            height: "420px",
+            backgroundColor: "white",
+            borderRadius: "16px",
+            boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            animation: "fadeIn 0.3s ease",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#2563eb",
+              color: "white",
+              padding: "12px",
+
+              zIndex: 999,
+              fontWeight: "bold",
+            }}
+          >
+            Habifast Chat
+          </div>
+
+          <div
+            style={{
+              flex: 1,
+              padding: "10px",
+              overflowY: "auto",
+              zIndex: 999,
+              fontSize: "14px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "6px",
+            }}
+          >
+            {chatMessages.map((msg, i) => (
+              <div key={i}>{msg}</div>
+            ))}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              borderTop: "1px solid #eee",
+              padding: "8px",
+              alignItems: "center",
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Escribe un mensaje..."
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              style={{
+                flex: 1,
+                border: "none",
+                outline: "none",
+                fontSize: "14px",
+              }}
+            />
+            <button
+              onClick={handleSendMessage}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "#2563eb",
+              }}
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Animación */}
       <style>
         {`
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  `}
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        `}
       </style>
 
     </div>
