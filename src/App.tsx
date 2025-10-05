@@ -109,7 +109,7 @@ export default function App() {
 
           <TabsContent value="design" className="mt-6">
             <InteriorDesigner
-              modules={placedModules}
+              modules={placedModules.filter(m => m.type.isEditable)}
             />
           </TabsContent>
 

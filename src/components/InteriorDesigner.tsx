@@ -148,7 +148,6 @@ const furnitureTypes = [
     size: { width: 70, height: 40 }
   },
 
-  // 🧘 Recreación y ejercicio
   {
     id: 'treadmill',
     name: 'Caminadora con Arnés',
@@ -241,16 +240,42 @@ export function InteriorDesigner({ modules }: InteriorDesignerProps) {
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!draggedFurniture || !containerRef.current) return;
+  if (!draggedFurniture || !containerRef.current) return;
 
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const newX = e.clientX - containerRect.left - dragOffset.x;
-    const newY = e.clientY - containerRect.top - dragOffset.y;
+  const containerRect = containerRef.current.getBoundingClientRect();
+  const furniture = placedFurniture.find(f => f.id === draggedFurniture);
+  if (!furniture) return;
 
-    setPlacedFurniture(furniture =>
-      furniture.map(f => f.id === draggedFurniture ? { ...f, position: { x: newX, y: newY } } : f)
-    );
-  };
+  const newX = e.clientX - containerRect.left - dragOffset.x;
+  const newY = e.clientY - containerRect.top - dragOffset.y;
+
+  // 🔒 Limitar el movimiento dentro de los bordes del módulo
+  const maxX = selectedModule.type.size.width - furniture.type.size.width;
+  const maxY = selectedModule.type.size.height - furniture.type.size.height;
+
+  const clampedX = Math.max(0, Math.min(newX, maxX));
+  const clampedY = Math.max(0, Math.min(newY, maxY));
+
+  setPlacedFurniture(furnitureArr =>
+    furnitureArr.map(f =>
+      f.id === draggedFurniture
+        ? { ...f, position: { x: clampedX, y: clampedY } }
+        : f
+    )
+  );
+};
+
+  // const handleMouseMove = (e: React.MouseEvent) => {
+  //   if (!draggedFurniture || !containerRef.current) return;
+
+  //   const containerRect = containerRef.current.getBoundingClientRect();
+  //   const newX = e.clientX - containerRect.left - dragOffset.x;
+  //   const newY = e.clientY - containerRect.top - dragOffset.y;
+
+  //   setPlacedFurniture(furniture =>
+  //     furniture.map(f => f.id === draggedFurniture ? { ...f, position: { x: newX, y: newY } } : f)
+  //   );
+  // };
 
   const handleMouseUp = () => {
     setDraggedFurniture(null);

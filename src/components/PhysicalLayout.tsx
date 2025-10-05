@@ -2,7 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import marsBg from "../assets/mars.jpg";
 import {
+
   X,
   Droplets,
   Utensils,
@@ -12,7 +14,6 @@ import {
   FlaskConical,
   Sun
 } from "lucide-react";
-import exampleImage from 'figma:asset/75df9313e055770d0b3c6326f4f011cf5d855209.png';
 import { SpriteIcon } from "./SpriteIcon";
 
 const SPRITE_SCALE = 12;
@@ -43,6 +44,8 @@ const availableModules = [
     oxygen: 40,
     food: 10,
     size: { width: 5, height: 8 },
+    isEditable: false,
+
     icon: '🌱'
   },
   {
@@ -58,6 +61,8 @@ const availableModules = [
     oxygen: -5,
     food: 0,
     size: { width: 6, height: 8 },
+
+    isEditable: false,
     icon: '💧'
   },
   {
@@ -73,6 +78,8 @@ const availableModules = [
     oxygen: -5,
     food: 0,
     size: { width: 5, height: 10 },
+
+    isEditable: false,
     icon: '☀️'
   },
   {
@@ -88,6 +95,8 @@ const availableModules = [
     oxygen: -5,
     food: 0,
     size: { width: 8, height: 12 },
+
+    isEditable: true,
     icon: '🧪'
   },
   {
@@ -103,6 +112,8 @@ const availableModules = [
     oxygen: -10,
     food: 0,
     size: { width: 6, height: 10 },
+
+    isEditable: true,
     icon: '🛏️'
   },
   {
@@ -118,6 +129,8 @@ const availableModules = [
     oxygen: -5,
     food: 0,
     size: { width: 5, height: 8 },
+
+    isEditable: true,
     icon: '🍽️'
   },
   {
@@ -133,6 +146,8 @@ const availableModules = [
     oxygen: -5,
     food: 0,
     size: { width: 8, height: 14 },
+
+    isEditable: false,
     icon: '♻️'
   },
   {
@@ -148,6 +163,8 @@ const availableModules = [
     oxygen: -5,
     food: 0,
     size: { width: 5, height: 6 },
+
+    isEditable: false,
     icon: '🗑️'
   },
   {
@@ -163,6 +180,8 @@ const availableModules = [
     oxygen: -5,
     food: 0,
     size: { width: 10, height: 15 },
+
+    isEditable: true,
     icon: '📦'
   },
   {
@@ -178,6 +197,8 @@ const availableModules = [
     oxygen: 0,
     food: 0,
     size: { width: 3, height: 5 },
+
+    isEditable: false,
     icon: '🚗'
   },
   {
@@ -193,6 +214,8 @@ const availableModules = [
     oxygen: -5,
     food: 0,
     size: { width: 20, height: 30 },
+
+    isEditable: false,
     icon: '🚀'
   },
   {
@@ -208,6 +231,8 @@ const availableModules = [
     oxygen: -5,
     food: 0,
     size: { width: 8, height: 10 },
+
+    isEditable: true,
     icon: '⚕️'
   },
   {
@@ -223,6 +248,8 @@ const availableModules = [
     oxygen: -5,
     food: 0,
     size: { width: 12, height: 18 },
+
+    isEditable: true,
     icon: '🎯'
   }
 ];
@@ -362,7 +389,14 @@ export function PhysicalLayout({
   return (
     <div className="grid grid-cols-12 gap-6 h-full">
       {/* Sidebar con módulos disponibles */}
-      <div className="col-span-3 space-y-4">
+      <div
+        className="col-span-3 space-y-4"
+        style={{
+          overflowY: "auto",
+          maxHeight: "calc(100vh - 2rem)",
+          paddingRight: "8px", // margen derecho para que no tape el scrollbar
+        }}
+      >
         {availableModules.map((moduleType) => (
           <Card
             key={moduleType.id}
@@ -383,6 +417,7 @@ export function PhysicalLayout({
           </Card>
         ))}
       </div>
+
 
       {/* Área principal */}
       <div className="col-span-9 space-y-4 h-full flex flex-col">
@@ -452,13 +487,103 @@ export function PhysicalLayout({
             ref={containerRef}
             className="relative w-full h-full bg-cover bg-center min-h-[500px]"
             style={{
-              backgroundImage: `url(https://images.unsplash.com/photo-1633912236939-9571a69d5f36?w=1200&q=80)`
+              backgroundImage: `url(${marsBg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              position: "relative",
+              border: "1px solid rgba(255,255,255,0.2)"
             }}
             onMouseMove={handleMouseMove}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
-            {/* Módulos colocados */}
+            {/* === Coordenadas horizontales (arriba y abajo) === */}
+            <div
+              style={{
+                position: "absolute",
+                top: "0",
+                left: "0",
+                right: "0",
+                height: "20px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                color: "white",
+                fontSize: "10px",
+                padding: "0 10px",
+                background: "rgba(0,0,0,0.3)",
+                zIndex: 5,
+              }}
+            >
+              {Array.from({ length: 8 }).map((_, i) => (
+                <span key={i}>{i * 100}m</span>
+              ))}
+            </div>
+
+            <div
+              style={{
+                position: "absolute",
+                bottom: "0",
+                left: "0",
+                right: "0",
+                height: "20px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                color: "white",
+                fontSize: "10px",
+                padding: "0 10px",
+                background: "rgba(0,0,0,0.3)",
+                zIndex: 5,
+              }}
+            >
+              {Array.from({ length: 8 }).map((_, i) => (
+                <span key={i}>{i * 100}m</span>
+              ))}
+            </div>
+
+            <div
+              style={{
+                position: "absolute",
+                top: "20px",
+                bottom: "20px",
+                left: "0",
+                width: "30px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "center",
+                color: "white",
+                fontSize: "10px",
+                background: "rgba(0,0,0,0.3)",
+                zIndex: 5,
+              }}
+            >
+              {Array.from({ length: 10 }).map((_, i) => (
+                <span key={i}>{i * 50}</span>
+              ))}
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                top: "20px",
+                bottom: "20px",
+                right: "0",
+                width: "30px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "center",
+                color: "white",
+                fontSize: "10px",
+                background: "rgba(0,0,0,0.3)",
+                zIndex: 5,
+              }}
+            >
+              {Array.from({ length: 10 }).map((_, i) => (
+                <span key={i}>{i * 50}</span>
+              ))}
+            </div>
             {modules.map((module) => (
               <div
                 key={module.id}
