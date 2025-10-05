@@ -17,13 +17,13 @@ export default function App() {
     const centerX = 450;
     const centerY = 300;
     const randomOffset = () => (Math.random() - 0.5) * 100;
-    
+
     const newModule = {
       id: `${moduleType.id}-${Date.now()}`,
       type: moduleType,
-      position: { 
-        x: centerX + randomOffset(), 
-        y: centerY + randomOffset() 
+      position: {
+        x: centerX + randomOffset(),
+        y: centerY + randomOffset()
       }
     };
     setPlacedModules([...placedModules, newModule]);
@@ -34,7 +34,7 @@ export default function App() {
   };
 
   const handleUpdateModule = (id: string, position: { x: number; y: number }) => {
-    setPlacedModules(modules => 
+    setPlacedModules(modules =>
       modules.map(m => m.id === id ? { ...m, position } : m)
     );
   };
@@ -120,6 +120,70 @@ export default function App() {
           </TabsContent>
         </Tabs>
       </div>
+      {/* Globito de chat flotante */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: "24px",
+          right: "24px",
+          zIndex: 50,
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+        }}
+      >
+        {/* Mensajito emergente */}
+        <div
+          style={{
+            backgroundColor: "#fff",
+            color: "#000",
+            padding: "8px 14px",
+            borderRadius: "12px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+            fontSize: "14px",
+            animation: "fadeIn 0.6s ease",
+          }}
+        >
+          ¿Necesitas ayuda?
+        </div>
+
+        {/* Botón del chatbot */}
+        <div
+          style={{
+            width: "56px",
+            height: "56px",
+            borderRadius: "50%",
+            backgroundColor: "#2563eb",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "white",
+            fontSize: "26px",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.25)",
+            cursor: "pointer",
+            transition: "transform 0.2s ease",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.transform = "scale(1.1)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.transform = "scale(1)")
+          }
+        >
+          🤖
+        </div>
+      </div>
+
+      {/* Animación para el mensaje */}
+      <style>
+        {`
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  `}
+      </style>
+
     </div>
   );
 }

@@ -240,42 +240,16 @@ export function InteriorDesigner({ modules }: InteriorDesignerProps) {
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-  if (!draggedFurniture || !containerRef.current) return;
+    if (!draggedFurniture || !containerRef.current) return;
 
-  const containerRect = containerRef.current.getBoundingClientRect();
-  const furniture = placedFurniture.find(f => f.id === draggedFurniture);
-  if (!furniture) return;
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const newX = e.clientX - containerRect.left - dragOffset.x;
+    const newY = e.clientY - containerRect.top - dragOffset.y;
 
-  const newX = e.clientX - containerRect.left - dragOffset.x;
-  const newY = e.clientY - containerRect.top - dragOffset.y;
-
-  // 🔒 Limitar el movimiento dentro de los bordes del módulo
-  const maxX = selectedModule.type.size.width - furniture.type.size.width;
-  const maxY = selectedModule.type.size.height - furniture.type.size.height;
-
-  const clampedX = Math.max(0, Math.min(newX, maxX));
-  const clampedY = Math.max(0, Math.min(newY, maxY));
-
-  setPlacedFurniture(furnitureArr =>
-    furnitureArr.map(f =>
-      f.id === draggedFurniture
-        ? { ...f, position: { x: clampedX, y: clampedY } }
-        : f
-    )
-  );
-};
-
-  // const handleMouseMove = (e: React.MouseEvent) => {
-  //   if (!draggedFurniture || !containerRef.current) return;
-
-  //   const containerRect = containerRef.current.getBoundingClientRect();
-  //   const newX = e.clientX - containerRect.left - dragOffset.x;
-  //   const newY = e.clientY - containerRect.top - dragOffset.y;
-
-  //   setPlacedFurniture(furniture =>
-  //     furniture.map(f => f.id === draggedFurniture ? { ...f, position: { x: newX, y: newY } } : f)
-  //   );
-  // };
+    setPlacedFurniture(furniture =>
+      furniture.map(f => f.id === draggedFurniture ? { ...f, position: { x: newX, y: newY } } : f)
+    );
+  };
 
   const handleMouseUp = () => {
     setDraggedFurniture(null);
@@ -374,7 +348,7 @@ export function InteriorDesigner({ modules }: InteriorDesignerProps) {
       </div>
     );
   }
-
+  console.log(selectedModule)
   // Vista de diseño interior
   return (
     <div className="grid grid-cols-12 gap-6 h-full">
@@ -396,7 +370,7 @@ export function InteriorDesigner({ modules }: InteriorDesignerProps) {
 
         <div className="space-y-3">
           <h4>Muebles Disponibles</h4>
-          {furnitureTypes.map((furniture) => (
+          {furnitureTypes.filter(f => f.category === selectedModule.type.name).map((furniture) => (
             <Card
               key={furniture.id}
               className={`p-3 cursor-grab active:cursor-grabbing ${furniture.color} text-black hover:opacity-90 transition-opacity`}
