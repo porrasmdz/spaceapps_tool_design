@@ -33,14 +33,14 @@ export function ExploreView({ placedModules }: ExploreViewProps) {
       id: "laboratory",
       name: "Laboratorio de Investigación",
       description: "Área de trabajo científico y análisis de muestras marcianas",
-      image: "https://images.unsplash.com/photo-1735448214729-64f6d1920c45?w=800&q=80",
+      image: "../assets/greenhouse.jpg",
       connections: ["main-hub", "greenhouse"]
     },
     {
       id: "greenhouse",
       name: "Invernadero Hidropónico",
       description: "Sistema de cultivo de plantas para producción de alimentos y oxígeno",
-      image: "https://images.unsplash.com/photo-1699799462235-53a0ca5a7a43?w=800&q=80",
+      image: "../assets/greenhouse.jpg",
       connections: ["main-hub", "laboratory"]
     }
   ];
