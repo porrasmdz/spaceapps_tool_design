@@ -37,7 +37,7 @@ export function SpriteIcon({ id, size = 80 }: SpriteIconProps) {
         backgroundRepeat: "no-repeat",
         backgroundSize: `${512 * scale}px ${512 * scale}px`, // escala total del spritesheet
         backgroundPosition: `-${sprite.x * scale}px -${sprite.y * scale}px`,
-        imageRendering: "pixelated", // mantiene la nitidez al escalar
+        imageRendering: "auto", // mantiene la nitidez al escalar
       }}
     />
   );

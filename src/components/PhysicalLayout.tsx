@@ -429,7 +429,7 @@ export function PhysicalLayout({
           </div>
 
           <div className="grid grid-cols-5 gap-4">
-            <Card className="p-3 bg-white text-black">
+            <Card className={`p-3 ${totalO2 < 0 ? 'bg-red-500': 'bg-white'} text-black`}>
               <div className="flex items-center gap-2">
                 <Wind className="w-4 h-4 text-blue-500" />
                 <div>
@@ -439,7 +439,7 @@ export function PhysicalLayout({
               </div>
             </Card>
 
-            <Card className="p-3 bg-white text-black">
+            <Card className={`p-3 ${totalWater < 0 ? 'bg-red-500': 'bg-white'} text-black`}>
               <div className="flex items-center gap-2">
                 <Droplets className="w-4 h-4 text-blue-500" />
                 <div>
@@ -449,7 +449,7 @@ export function PhysicalLayout({
               </div>
             </Card>
 
-            <Card className="p-3 bg-white text-black">
+            <Card className={`p-3 ${totalFood < 0 ? 'bg-red-500': 'bg-white'} text-black`}>
               <div className="flex items-center gap-2">
                 <Utensils className="w-4 h-4 text-green-500" />
                 <div>
@@ -459,7 +459,7 @@ export function PhysicalLayout({
               </div>
             </Card>
 
-            <Card className="p-3 bg-white text-black">
+            <Card className={`p-3 ${totalEnergy < 0 ? 'bg-red-500': 'bg-white'} text-black`}>
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4 text-yellow-500" />
                 <div>
